@@ -735,6 +735,7 @@ textarea {
 }
 
 .js .image-upload {
+<<<<<<< HEAD
   #field-image-url {
     padding-right: 90px;
   }
@@ -767,6 +768,45 @@ textarea {
     .border-radius(100px);
     .icon-remove {
       margin-right: 0;
+=======
+    #field-image-url {
+        padding-right: @grid-gutter-width/2;
+    }
+    #field-image-upload {
+        cursor: pointer;
+        position: absolute;
+        z-index: 1;
+        .opacity(0);
+    }
+    .controls {
+        position: relative;
+    }
+    .fa{
+        margin-right: @grid-gutter-width/6;
+    } 
+    .btn {
+        position: relative;
+        top: 0;
+        margin-right: @grid-gutter-width/3;
+        &.hover {
+            color: @gray-dark;
+            text-decoration: none;
+            background-position: 0 -15px;
+            .transition(background-position .1s linear);
+        }
+    }
+    .btn-remove-url {
+        position: absolute;
+        margin-right: 0;
+        top: (@grid-gutter-width/6) + 3;
+        right: @grid-gutter-width/3;
+        padding: 0 @grid-gutter-width/10;
+        line-height: 1;
+        .border-radius(100px);
+        .fa-remove {
+            margin-right: 0;
+        }
+>>>>>>> bda4bca... Finalize styling of the Image Upload inputs
     }
   }
 }
