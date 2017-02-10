@@ -167,6 +167,7 @@ def _get_test_app():
 
     '''
     config['ckan.legacy_templates'] = False
+    config['testing'] = True
     app = ckan.config.middleware.make_app(config['global_conf'], **config)
     app = CKANTestApp(app)
     return app
@@ -274,7 +275,7 @@ def submit_and_follow(app, form, extra_environ=None, name=None,
                    extra_environ=extra_environ)
 
 
-## FIXME: remove webtest_* functions below when we upgrade webtest
+# FIXME: remove webtest_* functions below when we upgrade webtest
 
 def webtest_submit(form, name=None, index=None, value=None, **args):
     '''

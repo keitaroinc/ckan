@@ -12,8 +12,8 @@ import paste.fileapp
 
 import ckan.logic as logic
 import ckan.lib.base as base
-import ckan.lib.maintain as maintain
 import ckan.lib.i18n as i18n
+import ckan.lib.maintain as maintain
 import ckan.lib.navl.dictization_functions as dict_fns
 import ckan.lib.helpers as h
 import ckan.model as model
@@ -23,7 +23,7 @@ import ckan.lib.uploader as uploader
 import ckan.plugins as p
 import ckan.lib.render
 
-from ckan.common import OrderedDict, _, json, request, c, g, response
+from ckan.common import OrderedDict, _, json, request, c, response
 from home import CACHE_PARAMETERS
 
 log = logging.getLogger(__name__)
@@ -147,7 +147,7 @@ class PackageController(base.BaseController):
         c.query_error = False
         page = h.get_page_number(request.params)
 
-        limit = g.datasets_per_page
+        limit = int(config.get('ckan.datasets_per_page', 20))
 
         # most search operations should reset the page counter:
         params_nopage = [(k, v) for k, v in request.params.items()
@@ -244,7 +244,7 @@ class PackageController(base.BaseController):
                 'license_id': _('Licenses'),
                 }
 
-            for facet in g.facets:
+            for facet in h.facets():
                 if facet in default_facet_titles:
                     facets[facet] = default_facet_titles[facet]
                 else:
@@ -278,7 +278,6 @@ class PackageController(base.BaseController):
                 item_count=query['count'],
                 items_per_page=limit
             )
-            c.facets = query['facets']
             c.search_facets = query['search_facets']
             c.page.items = query['results']
         except SearchQueryError, se:
@@ -294,23 +293,18 @@ class PackageController(base.BaseController):
             # SOLR
             log.error('Dataset search error: %r', se.args)
             c.query_error = True
-            c.facets = {}
             c.search_facets = {}
             c.page = h.Page(collection=[])
         c.search_facets_limits = {}
         for facet in c.search_facets.keys():
             try:
                 limit = int(request.params.get('_%s_limit' % facet,
-                                               g.facets_default_number))
+                            int(config.get('search.facets.default', 10))))
             except ValueError:
                 abort(400, _('Parameter "{parameter_name}" is not '
                              'an integer').format(
                       parameter_name='_%s_limit' % facet))
             c.search_facets_limits[facet] = limit
-
-        maintain.deprecate_context_item(
-            'facets',
-            'Use `c.search_facets` instead.')
 
         self._setup_template_variables(context, {},
                                        package_type=package_type)
@@ -657,7 +651,8 @@ class PackageController(base.BaseController):
                     # no data so keep on page
                     msg = _('You must add at least one data resource')
                     # On new templates do not use flash message
-                    if g.legacy_templates:
+
+                    if asbool(config.get('ckan.legacy_templates')):
                         h.flash_error(msg)
                         h.redirect_to(controller='package',
                                       action='new_resource', id=id)
@@ -1157,7 +1152,7 @@ class PackageController(base.BaseController):
                 response.headers['Content-Type'] = content_type
             response.status = status
             return app_iter
-        elif not 'url' in rsc:
+        elif 'url' not in rsc:
             abort(404, _('No download is available'))
         h.redirect_to(rsc['url'])
 
@@ -1460,13 +1455,13 @@ class PackageController(base.BaseController):
                 else:
                     data = get_action('resource_view_create')(context, data)
             except ValidationError, e:
-                ## Could break preview if validation error
+                # Could break preview if validation error
                 to_preview = False
                 errors = e.error_dict
                 error_summary = e.error_summary
             except NotAuthorized:
-                ## This should never happen unless the user maliciously changed
-                ## the resource_id in the url.
+                # This should never happen unless the user maliciously changed
+                # the resource_id in the url.
                 abort(403, _('Unauthorized to edit resource'))
             else:
                 if not to_preview:
@@ -1474,14 +1469,14 @@ class PackageController(base.BaseController):
                                   action='resource_views',
                                   id=id, resource_id=resource_id)
 
-        ## view_id exists only when updating
+        # view_id exists only when updating
         if view_id:
             try:
                 old_data = get_action('resource_view_show')(context,
                                                             {'id': view_id})
                 data = data or old_data
                 view_type = old_data.get('view_type')
-                ## might as well preview when loading good existing view
+                # might as well preview when loading good existing view
                 if not errors:
                     to_preview = True
             except (NotFound, NotAuthorized):

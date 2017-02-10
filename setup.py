@@ -142,6 +142,7 @@ entry_points = {
         'example_itranslation = ckanext.example_itranslation.plugin:ExampleITranslationPlugin',
         'example_iconfigurer_v1 = ckanext.example_iconfigurer.plugin_v1:ExampleIConfigurerPlugin',
         'example_iconfigurer_v2 = ckanext.example_iconfigurer.plugin_v2:ExampleIConfigurerPlugin',
+        'example_flask_iblueprint = ckanext.example_flask_iblueprint.plugin:ExampleFlaskIBlueprintPlugin',
         'example_iuploader = ckanext.example_iuploader.plugin:ExampleIUploader',
         'example_ipermissionlabels = ckanext.example_ipermissionlabels.plugin:ExampleIPermissionLabelsPlugin',
     ],
@@ -167,6 +168,7 @@ entry_points = {
         'test_routing_plugin = ckan.tests.config.test_middleware:MockRoutingPlugin',
         'test_helpers_plugin = ckan.tests.lib.test_helpers:TestHelpersPlugin',
         'test_feed_plugin = ckan.tests.controllers.test_feed:MockFeedPlugin',
+        'test_js_translations_plugin = ckan.tests.lib.test_i18n:TestJSTranslationsPlugin',
     ],
     'babel.extractors': [
         'ckan = ckan.lib.extract:extract_ckan',
@@ -207,4 +209,12 @@ setup(
     # setup.py test command needs a TestSuite so does not work with py.test
     # test_suite = 'nose.collector',
     # tests_require=[ 'py >= 0.8.0-alpha2' ]
+    classifiers=[
+        # https://pypi.python.org/pypi?%3Aaction=list_classifiers
+        'Development Status :: 5 - Production/Stable',
+        'License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 2 :: Only'
+        'Programming Language :: Python :: 2.7',
+    ],
 )
