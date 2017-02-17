@@ -56,14 +56,20 @@ this.ckan.module('image-upload', function($) {
         .appendTo(this.el);
 
       // Button to set the field to be a URL
+<<<<<<< HEAD
       this.button_url = $('<a href="javascript:;" class="btn">' +
                           '<i class="fa fa-globe"></i>' +
                           this._('Link') + '</a>')
         .prop('title', this._('Link to a URL on the internet (you can also link to an API)'))
+=======
+      this.button_url = $('<a href="javascript:;" class="btn btn-default"><i class="fa fa-globe"></i>'+this.i18n('url')+'</a>')
+        .prop('title', this.i18n('url_tooltip'))
+>>>>>>> 9f2024f... Finalize styling of the Image Upload inputs
         .on('click', this._onFromWeb)
         .insertAfter(this.input);
 
       // Button to attach local file to the form
+<<<<<<< HEAD
       this.button_upload = $('<a href="javascript:;" class="btn">' +
                              '<i class="fa fa-cloud-upload"></i>' +
                              this._('Upload') + '</a>')
@@ -74,6 +80,14 @@ this.ckan.module('image-upload', function($) {
       $('<a href="javascript:;" class="btn btn-danger btn-remove-url">'
         + removeText + '</a>')
         .prop('title', removeText)
+=======
+      this.button_upload = $('<a href="javascript:;" class="btn btn-default"><i class="fa fa-cloud-upload"></i>'+this.i18n('upload')+'</a>')
+        .insertAfter(this.input);
+
+      // Button for resetting the form when there is a URL set
+      $('<a href="javascript:;" class="btn btn-danger btn-remove-url"><i class="fa fa-remove"></i></a>')
+        .prop('title', this.i18n('remove'))
+>>>>>>> 9f2024f... Finalize styling of the Image Upload inputs
         .on('click', this._onRemove)
         .insertBefore(this.field_url_input);
 
