@@ -6,7 +6,7 @@
        href="#embed-{{ resource_view['id'] }}"
        data-module="resource-view-embed"
        data-module-id="{{ resource_view['id'] }}"
-       data-module-url="{{ h.url_for('resource_view', id=package['name'], resource_id=resource['id'], view_id=resource_view['id'], qualified=True) }}">
+       data-module-url="{{ h.url('resource_view', id=package['name'], resource_id=resource['id'], view_id=resource_view['id'], qualified=True) }}">
       <i class="fa fa-code"></i>
       {{ _("Embed") }}
     </a>
@@ -20,7 +20,7 @@
       {% else %}
         <div class="data-viewer-error js-hide">
           <p class="text-error">
-            <i class="fa fa-info-circle"></i>
+            <i class="fa fa-info-sign"></i>
             {{ _('This resource view is not available at the moment.') }}
             <a href="#" data-toggle="collapse" data-target="#data-view-error">
               {{ _('Click here for more information.') }}
@@ -29,7 +29,7 @@
           <p id="data-view-error" class="collapse"></p>
           <p>
             <a href="{{ resource.url }}" class="btn btn-lg resource-url-analytics" target="_blank">
-              <i class="icon-large icon-download"></i>
+              <i class="fa fa-large fa fa-download"></i>
               {{ _('Download resource') }}
             </a>
           </p>
