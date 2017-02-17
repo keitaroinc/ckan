@@ -45,8 +45,8 @@ this.ckan.module('image-upload', function($, _) {
       var field_name = 'input[name="' + options.field_name + '"]';
 
       this.input = $(field_upload, this.el);
-      this.field_url = $(field_url, this.el).parents('.control-group');
-      this.field_image = this.input.parents('.control-group');
+      this.field_url = $(field_url, this.el).parents('.form-group');
+      this.field_image = this.input.parents('.form-group');
       this.field_url_input = $('input', this.field_url);
       this.field_name = this.el.parents('form').find(field_name);
       // this is the location for the upload/link data/image label
@@ -57,7 +57,8 @@ this.ckan.module('image-upload', function($, _) {
       // Is there a clear checkbox on the form already?
       var checkbox = $(field_clear, this.el);
       if (checkbox.length > 0) {
-        checkbox.parents('.control-group').remove();
+        options.is_upload = true;
+        checkbox.parents('.form-group').remove();
       }
 
       // Adds the hidden clear input to the form
