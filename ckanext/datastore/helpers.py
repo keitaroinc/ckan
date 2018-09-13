@@ -105,7 +105,10 @@ def get_table_names_from_sql(context, sql):
     table_names = []
 
     try:
-        query_plan = json.loads(result['QUERY PLAN'])
+        if isinstance(result['QUERY PLAN'], str):
+            query_plan = json.loads(result['QUERY PLAN'])
+        if isinstance(result['QUERY PLAN'], list):
+            query_plan = json.loads(json.dumps(result['QUERY PLAN']))
         plan = query_plan[0]['Plan']
 
         table_names.extend(_get_table_names_from_plan(plan))
